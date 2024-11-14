@@ -1,0 +1,44 @@
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore environment settings and sensitive files
+.env
+config/database.php     # If you have sensitive database credentials here
+
+# Ignore compiled code, cache, and logs
+/vendor/
+node_modules/
+composer.lock
+npm-debug.log
+*.log
+
+# Ignore XAMPP-specific files
+/xamppfiles/
+/xampp/
+/htdocs/
+
+# Ignore IDE and editor settings
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore files and directories related to PHP sessions and cache
+sessions/
+cache/
+
+# Ignore uploads and temporary files
+/uploads/
+*.bak
+*.tmp
+
+# Ignore operating system files
+*.swp
+*.swo
+*.bak
+*.tmp
+*.old
+
+# Ignore temporary files created by PHP
+*.php~
