@@ -1,6 +1,6 @@
 <?php
 
-require_once '../helpers/response_helper.php';
+require_once '../utils/helpers.php';
 
 class Database
 {
@@ -12,15 +12,20 @@ class Database
 
   public function __construct()
   {
-    if (!file_exists(__DIR__ . '/config.php'))
-      sendErrorRes(500, 'Configuration file not found! Please create a config.php based on config.example.php.');
+    if (!file_exists(__DIR__ . '/config.php')) {
+      $this->renderErrorPage(
+        "Configuration Error",
+        "Configuration file not found! Please create a <code>config.php</code> based on <code>config.example.php</code>."
+      );
+      exit;
+    }
 
     $config = include(__DIR__ . '/config.php'); // Load configuration file
 
     $this->host = $config['host'];
     $this->db_name = $config['db_name'];
-    $this->username = $config['username'];
-    $this->password = $config['password'];
+    $this->username = $config['username'] ?? ''; // Ensure key exists
+    $this->password = $config['password'] ?? '';
   }
 
   public function getConnection()
@@ -31,9 +36,18 @@ class Database
       $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
       $this->conn->exec("set names utf8");
     } catch (PDOException $exception) {
-      sendErrorRes(500, 'Connection error: ' . $exception->getMessage());
+      $this->renderErrorPage(
+        "Database Connection Error",
+        "Failed to connect to the database. Error message: " . $exception->getMessage()
+      );
+      exit;
     }
 
     return $this->conn;
+  }
+
+  private function renderErrorPage($title, $message)
+  {
+    include '../views/errors/general.php';
   }
 }

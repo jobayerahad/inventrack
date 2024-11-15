@@ -1,0 +1,10 @@
+# Block access to all files except those in the public folder
+Options -Indexes
+<FilesMatch "(config.php|\.env|.*\.log|.*\.sql)">
+    Require all denied
+</FilesMatch>
+
+# Deny access to all folders except public
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ - [F,L]

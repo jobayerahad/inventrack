@@ -1,11 +1,11 @@
 </main> <!-- End of Main Content -->
 
 <!-- Footer -->
-<footer class="bg-dark text-white mt-5">
-	<div class="container py-4">
+<footer class="bg-dark text-white">
+	<div class="container py-3">
 		<div class="row">
 			<div class="col-md-6">
-				<p>&copy; <?php echo date("Y"); ?> SBAC Bank PLC. All Rights Reserved.</p>
+				<p class="mb-0">&copy; <?php echo date("Y"); ?> <a href="http://www.sbacbank.com" target="_blank">SBAC Bank PLC</a>. All Rights Reserved.</p>
 			</div>
 
 			<div class="col-md-6 text-md-end">

@@ -3,8 +3,7 @@
 Thumbs.db
 
 # Ignore environment settings and sensitive files
-.env
-config/database.php     # If you have sensitive database credentials here
+.env  # If you have sensitive database credentials here
 
 # Ignore compiled code, cache, and logs
 /vendor/
@@ -42,3 +41,4 @@ cache/
 
 # Ignore temporary files created by PHP
 *.php~
+config/config.php
