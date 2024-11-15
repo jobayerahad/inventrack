@@ -23,7 +23,7 @@ $base_url = $config['base_url'];
 	<!-- Navigation Bar -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container">
-			<a class="navbar-brand" href="home">
+			<a class="navbar-brand" href="<?= $base_url ?>/home">
 				<img src="<?= $base_url ?>/images/logo-white.png" alt="Logo" style="width: auto; height: 2.5rem" />
 			</a>
 
