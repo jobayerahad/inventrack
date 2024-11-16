@@ -1,10 +1,17 @@
 <?php
 
+require_once '../controllers/AuthController.php';
 require_once '../controllers/HomeController.php';
+require_once '../controllers/CategoryController.php';
 require_once '../controllers/ItemController.php';
 
+// Start session at the very beginning
+if (session_status() === PHP_SESSION_NONE) session_start();
+
 // Initialize Controllers
+$authController = new AuthController();
 $homeController = new HomeController();
+$categoryController = new CategoryController();
 $itemController = new ItemController();
 
 // Capture the requested URI and remove query strings
@@ -15,41 +22,94 @@ $basePath = '/inventrack/public';
 $path = str_replace($basePath, '', $requestUri);
 $path = trim($path, '/'); // Remove leading/trailing slashes
 
+// Middleware for auth check
+if (!isset($_SESSION['user_id']) && in_array($path, ['home', 'items', 'categories', 'requests', 'vendors'])) {
+  redirect('login', '');
+  exit;
+}
+
 // Routing Logic
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
   switch ($path) {
+    case 'login':
+      $authController->showLoginForm();
+      break;
+
+    case 'register':
+      $authController->showRegisterForm();
+      break;
+
+    case 'logout':
+      $authController->logout();
+      break;
+
     case '':
     case 'home':
       $homeController->index();
       break;
+
+    case 'categories':
+      $categoryController->index();
+      break;
+
+    case 'categories/create':
+      $categoryController->show();
+      break;
+
+      // case 'categories/edit':
+      //   $categoryController->editItemView();
+      //   break;
+
+    case 'categories/delete':
+      $categoryController->destroy();
+      break;
+
     case 'items':
-      $itemController->listItems();
+      $itemController->index();
       break;
+
     case 'items/add':
-      include '../views/items/add.php';
+      $itemController->show();
       break;
+
     case 'items/edit':
-      $itemController->editItemView();
+      $itemController->edit();
       break;
+
     case 'items/delete':
-      $itemController->deleteItem();
+      $itemController->destroy();
       break;
+
     default:
-      include '../views/not-found.php';
+      include BASE_PATH . '/views/not-found.php';
       break;
   }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
   switch ($path) {
+    case 'register':
+      $authController->register();
+      break;
+
+    case 'login':
+      $authController->login();
+      break;
+
+    case 'categories/create':
+      $categoryController->create();
+      break;
+
     case 'items/add':
-      $itemController->addItem();
+      $itemController->add();
       break;
+
     case 'items/update':
-      $itemController->updateItem();
+      $itemController->update();
       break;
+
     default:
-      include '../views/not-found.php';
+      include  BASE_PATH . '/views/not-found.php';
       break;
   }
 } else {
-  include '../views/not-found.php';
+  include BASE_PATH . '/views/not-found.php';
 }

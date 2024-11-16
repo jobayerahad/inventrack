@@ -1,6 +1,10 @@
 <?php
 $config = include BASE_PATH . '/config/config.php';
 $base_url = $config['base_url'];
+
+// Get the current script name or path
+$currentPath = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+$currentPath = str_replace('inventrack/', '', $currentPath); // Adjust for base folder if necessary
 ?>
 
 <!DOCTYPE html>
@@ -34,19 +38,23 @@ $base_url = $config['base_url'];
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav ms-auto">
 					<li class="nav-item">
-						<a class="nav-link active" href="<?= $base_url ?>/home">Home</a>
+						<a class="nav-link <?= $currentPath === 'home' || $currentPath === '' ? 'active' : '' ?>" href="<?= $base_url ?>/home">Home</a>
 					</li>
 
 					<li class="nav-item">
-						<a class="nav-link" href="<?= $base_url ?>/items">Items</a>
+						<a class="nav-link <?= $currentPath === 'categories' ? 'active' : '' ?>" href="<?= $base_url ?>/categories">Categories</a>
 					</li>
 
 					<li class="nav-item">
-						<a class="nav-link" href="<?= $base_url ?>/requests">Requests</a>
+						<a class="nav-link <?= $currentPath === 'items' ? 'active' : '' ?>" href="<?= $base_url ?>/items">Items</a>
 					</li>
 
 					<li class="nav-item">
-						<a class="nav-link" href="<?= $base_url ?>/vendors">Vendors</a>
+						<a class="nav-link <?= $currentPath === 'requests' ? 'active' : '' ?>" href="<?= $base_url ?>/requests">Requests</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link <?= $currentPath === 'vendors' ? 'active' : '' ?>" href="<?= $base_url ?>/vendors">Vendors</a>
 					</li>
 				</ul>
 			</div>

@@ -1,4 +1,5 @@
 <?php
+
 require_once '../models/ItemModel.php';
 
 class ItemController
@@ -10,13 +11,18 @@ class ItemController
     $this->model = new ItemModel();
   }
 
-  public function listItems()
+  public function index()
   {
     $items = $this->model->getAllItems();
     include '../views/items/list.php';
   }
 
-  public function addItem()
+  public function show()
+  {
+    include BASE_PATH . '/views/categories/add.php';
+  }
+
+  public function add()
   {
     if (isset($_POST['item_name'], $_POST['category'], $_POST['status'])) {
       $this->model->addItem($_POST['item_name'], $_POST['category'], $_POST['status']);
@@ -26,7 +32,7 @@ class ItemController
     }
   }
 
-  public function editItemView()
+  public function edit()
   {
     if (isset($_GET['id'])) {
       $item = $this->model->getItemById($_GET['id']);
@@ -36,7 +42,7 @@ class ItemController
     }
   }
 
-  public function updateItem()
+  public function update()
   {
     if (isset($_POST['id'], $_POST['item_name'], $_POST['category'], $_POST['status'])) {
       $this->model->updateItem($_POST['id'], $_POST['item_name'], $_POST['category'], $_POST['status']);
@@ -46,7 +52,7 @@ class ItemController
     }
   }
 
-  public function deleteItem()
+  public function destroy()
   {
     if (isset($_GET['id'])) {
       $this->model->deleteItem($_GET['id']);

@@ -1,6 +1,6 @@
 <?php include '../views/partials/header.php'; ?>
 
-<h1>Add New Item</h1>
+<h2>Add New Item</h2>
 
 <form action="<?= $base_url ?>/items/add" method="POST" class="mt-4">
   <div class="mb-3">
