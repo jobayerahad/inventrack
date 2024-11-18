@@ -1,9 +1,10 @@
 <?php
 
-require_once '../controllers/AuthController.php';
-require_once '../controllers/HomeController.php';
-require_once '../controllers/CategoryController.php';
-require_once '../controllers/ItemController.php';
+require_once BASE_PATH . '/controllers/AuthController.php';
+require_once BASE_PATH . '/controllers/HomeController.php';
+require_once BASE_PATH . '/controllers/CategoryController.php';
+require_once BASE_PATH . '/controllers/ItemController.php';
+require_once BASE_PATH . '/controllers/ProfileController.php';
 
 // Start session at the very beginning
 if (session_status() === PHP_SESSION_NONE) session_start();
@@ -13,6 +14,7 @@ $authController = new AuthController();
 $homeController = new HomeController();
 $categoryController = new CategoryController();
 $itemController = new ItemController();
+$profileController = new ProfileController();
 
 // Capture the requested URI and remove query strings
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -80,6 +82,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
       $itemController->destroy();
       break;
 
+    case 'profile':
+      $profileController->showProfile();
+      break;
+
     default:
       include BASE_PATH . '/views/not-found.php';
       break;
@@ -104,6 +110,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     case 'items/update':
       $itemController->update();
+      break;
+
+    case 'profile/update':
+      $profileController->updateProfile();
+      break;
+
+    case 'profile/change-password':
+      $profileController->changePassword();
       break;
 
     default:

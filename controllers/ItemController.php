@@ -1,6 +1,6 @@
 <?php
 
-require_once '../models/ItemModel.php';
+require_once BASE_PATH . '/models/ItemModel.php';
 
 class ItemController
 {
@@ -14,7 +14,7 @@ class ItemController
   public function index()
   {
     $items = $this->model->getAllItems();
-    include '../views/items/list.php';
+    include BASE_PATH . '/views/items/list.php';
   }
 
   public function show()
@@ -36,7 +36,7 @@ class ItemController
   {
     if (isset($_GET['id'])) {
       $item = $this->model->getItemById($_GET['id']);
-      include '../views/items/edit.php';
+      include BASE_PATH . '/views/items/edit.php';
     } else {
       redirect('items', 'error=1');
     }

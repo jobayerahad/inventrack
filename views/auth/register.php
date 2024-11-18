@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 // Redirect to home if already logged in
 if (isset($_SESSION['user_id'])) {

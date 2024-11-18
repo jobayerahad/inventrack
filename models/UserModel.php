@@ -47,4 +47,36 @@ class UserModel
 
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
+
+  public function updateUser($id, $name, $email)
+  {
+    $query = "UPDATE users SET name = :name, email = :email WHERE id = :id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':email', $email);
+    return $stmt->execute();
+  }
+
+  public function updatePassword($id, $currentPassword, $newPassword)
+  {
+    // Get the current user
+    $query = "SELECT password FROM users WHERE id = :id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Verify current password
+    if ($user && password_verify($currentPassword, $user['password'])) {
+      $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT); // Update to new password
+
+      $query = "UPDATE users SET password = :password WHERE id = :id";
+      $stmt = $this->conn->prepare($query);
+      $stmt->bindParam(':password', $hashedPassword);
+      $stmt->bindParam(':id', $id);
+      return $stmt->execute();
+    }
+    return false;
+  }
 }

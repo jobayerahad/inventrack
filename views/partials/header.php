@@ -5,6 +5,9 @@ $base_url = $config['base_url'];
 // Get the current script name or path
 $currentPath = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 $currentPath = str_replace('inventrack/', '', $currentPath); // Adjust for base folder if necessary
+
+// Check if user is authenticated
+$isAuthenticated = isset($_SESSION['user_id']);
 ?>
 
 <!DOCTYPE html>
@@ -13,6 +16,7 @@ $currentPath = str_replace('inventrack/', '', $currentPath); // Adjust for base 
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="<?= $base_url ?>/favicon.ico" type="image/x-icon">
 	<title>InvenTrack</title>
 
 	<!-- Latest Bootstrap CSS -->
@@ -23,7 +27,6 @@ $currentPath = str_replace('inventrack/', '', $currentPath); // Adjust for base 
 </head>
 
 <body>
-
 	<!-- Navigation Bar -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container">
@@ -37,25 +40,52 @@ $currentPath = str_replace('inventrack/', '', $currentPath); // Adjust for base 
 
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav ms-auto">
-					<li class="nav-item">
-						<a class="nav-link <?= $currentPath === 'home' || $currentPath === '' ? 'active' : '' ?>" href="<?= $base_url ?>/home">Home</a>
-					</li>
+					<!-- Show different options based on authentication -->
+					<?php if ($isAuthenticated): ?>
+						<li class="nav-item">
+							<a class="nav-link <?= $currentPath === 'home' || $currentPath === '' ? 'active' : '' ?>" href="<?= $base_url ?>/home">Home</a>
+						</li>
 
-					<li class="nav-item">
-						<a class="nav-link <?= $currentPath === 'categories' ? 'active' : '' ?>" href="<?= $base_url ?>/categories">Categories</a>
-					</li>
+						<li class="nav-item">
+							<a class="nav-link <?= $currentPath === 'categories' ? 'active' : '' ?>" href="<?= $base_url ?>/categories">Categories</a>
+						</li>
 
-					<li class="nav-item">
-						<a class="nav-link <?= $currentPath === 'items' ? 'active' : '' ?>" href="<?= $base_url ?>/items">Items</a>
-					</li>
+						<li class="nav-item">
+							<a class="nav-link <?= $currentPath === 'items' ? 'active' : '' ?>" href="<?= $base_url ?>/items">Items</a>
+						</li>
 
-					<li class="nav-item">
-						<a class="nav-link <?= $currentPath === 'requests' ? 'active' : '' ?>" href="<?= $base_url ?>/requests">Requests</a>
-					</li>
+						<li class="nav-item">
+							<a class="nav-link <?= $currentPath === 'requests' ? 'active' : '' ?>" href="<?= $base_url ?>/requests">Requests</a>
+						</li>
 
-					<li class="nav-item">
-						<a class="nav-link <?= $currentPath === 'vendors' ? 'active' : '' ?>" href="<?= $base_url ?>/vendors">Vendors</a>
-					</li>
+						<li class="nav-item">
+							<a class="nav-link <?= $currentPath === 'vendors' ? 'active' : '' ?>" href="<?= $base_url ?>/vendors">Vendors</a>
+						</li>
+
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<?= htmlspecialchars($_SESSION['user_name']) ?>
+							</a>
+
+							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item" href="<?= $base_url ?>/profile">Profile</a></li>
+
+								<li>
+									<hr class="dropdown-divider">
+								</li>
+
+								<li><a class="dropdown-item" href="<?= $base_url ?>/logout">Logout</a></li>
+							</ul>
+						</li>
+					<?php else: ?>
+						<li class="nav-item">
+							<a class="nav-link <?= $currentPath === 'login' ? 'active' : '' ?>" href="<?= $base_url ?>/login">Login</a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link <?= $currentPath === 'register' ? 'active' : '' ?>" href="<?= $base_url ?>/register">Register</a>
+						</li>
+					<?php endif; ?>
 				</ul>
 			</div>
 		</div>
